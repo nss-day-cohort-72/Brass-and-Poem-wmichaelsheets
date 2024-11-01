@@ -100,12 +100,7 @@ void DeleteProduct(List<Product> products, List<ProductType> productTypes)
     Console.WriteLine("Choose the product that you would like to delete:");
     Console.WriteLine();
 
-    for (int i = 0; i < products.Count; i++)
-    {
-        Console.WriteLine($"{i + 1}. {products[i].Name} at ${products[i].Price} (Type: {productTypes.FirstOrDefault(pt => pt.Id == products[i].ProductTypeId)?.Title})");
-    }
-
-    Console.WriteLine("-------------");
+    DisplayAllProducts(products, productTypes);
 
     Console.WriteLine();
 
@@ -172,12 +167,8 @@ void UpdateProduct(List<Product> products, List<ProductType> productTypes)
     Console.WriteLine("Choose the product that you would like to modify:");
     Console.WriteLine();
 
-    for (int i = 0; i < products.Count; i++)
-    {
-        Console.WriteLine($"{i + 1}. {products[i].Name} at ${products[i].Price} (Type: {productTypes.FirstOrDefault(pt => pt.Id == products[i].ProductTypeId)?.Title})");
-    }
+    DisplayAllProducts(products, productTypes);
 
-    Console.WriteLine("-------------");
 
     Console.WriteLine();
 
@@ -198,9 +189,10 @@ void UpdateProduct(List<Product> products, List<ProductType> productTypes)
         return;
     }
 
-    int indexToModify = choose - 1;
-    Product productToUpdate = products[indexToModify];
-    Console.WriteLine($"Selected product: {ProductDetails(productToUpdate)}");
+
+    Product productToUpdate = products[choose - 1];
+    Console.WriteLine($"Updating product: {productToUpdate.Name}, Price: {productToUpdate.Price}, Type: {productTypes.FirstOrDefault(pt => pt.Id == productToUpdate.ProductTypeId)?.Title}");
+
     Console.WriteLine();
 
     Console.Write("Enter the new name (leave blank to keep the same): ");
@@ -211,30 +203,28 @@ void UpdateProduct(List<Product> products, List<ProductType> productTypes)
     }
 
     Console.Write("Enter the new selling price (leave blank to keep the same): ");
-    decimal newPrice;
-    if (decimal.TryParse(Console.ReadLine(), out newPrice))
+
+    if (decimal.TryParse(Console.ReadLine(), out decimal newPrice) && newPrice > 0)
     {
         productToUpdate.Price = newPrice;
     }
 
-    Console.WriteLine("Enter the new product type (or 0 to keep the same): ");
+    Console.WriteLine("Enter the new product type (leave blank to keep the same): ");
 
-    var productTypes = new List<ProductTypeId> { apparelType, potionsType, enchantedObjectsType, wandsType };
     for (int i = 0; i < productTypes.Count; i++)
     {
-        Console.WriteLine($"{i + 1}. {productTypes[i].Name}");
+        Console.WriteLine($"{i + 1}. {productTypes[i].Title}");
     }
 
 
-    int newTypeChoice;
-    if (int.TryParse(Console.ReadLine(), out newTypeChoice) && newTypeChoice > 0 && newTypeChoice <= productTypes.Count)
+    if (int.TryParse(Console.ReadLine(), out int newTypeChoice) && newTypeChoice > 0 && newTypeChoice <= productTypes.Count)
     {
-        productToUpdate.ProductTypeId = productTypes[newTypeChoice - 1];
+        productToUpdate.ProductTypeId = productTypes[newTypeChoice - 1].Id;
     }
 
 
     Console.WriteLine($"The product has been updated:");
-    Console.WriteLine(ProductDetails(productToUpdate));
+    Console.WriteLine($"{productToUpdate.Name}, Price: ${productToUpdate.Price}, Type: {productTypes.FirstOrDefault(pt => pt.Id == productToUpdate.ProductTypeId)?.Title}");
 }
 // don't move or change this!
 public partial class Program { }
