@@ -1,6 +1,6 @@
 ﻿
 //create a "products" variable here to include at least five Product instances. Give them appropriate ProductTypeIds.
-var products = new List<Product>
+List<Product> products = new List<Product>
 {
     new Product {Name = "Trumpet", Price = 1345.67M, ProductTypeId = 1},
     new Product {Name = "Moonlit Serenade", Price = 25.11M, ProductTypeId = 2},
@@ -9,7 +9,7 @@ var products = new List<Product>
     new Product {Name = "Whispering Wind", Price = 15.67M, ProductTypeId = 2}
 };
 //create a "productTypes" variable here with a List of ProductTypes, and add "Brass" and "Poem" types to the List. 
-var productTypes = new List<ProductType>
+List<ProductType> productTypes = new List<ProductType>
 {
     new ProductType {Id = 1, Title = "Brass"},
     new ProductType {Id = 2, Title = "Poem"}
@@ -87,7 +87,8 @@ void DisplayAllProducts(List<Product> products, List<ProductType> productTypes)
 
     for (int i = 0; i < products.Count; i++)
     {
-        Console.WriteLine($"{i + 1}. {products[i].Name} at ${products[i].Price} (Type: {productTypes.FirstOrDefault(pt => pt.Id == products[i].ProductTypeId)?.Title})");
+        ProductType myType = productTypes.FirstOrDefault(t => t.Id == products[i].ProductTypeId);
+        Console.WriteLine($"{i + 1}. {products[i].Name} at ${products[i].Price} (Type: {myType})");
     }
 
     Console.WriteLine("-------------");
